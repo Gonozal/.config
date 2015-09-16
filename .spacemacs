@@ -9,7 +9,7 @@
   (setq-default
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (ie. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '("~/.spacemacs-contrib/")
+   ;; dotspacemacs-configuration-layer-path '("~/.spacemacs-contrib/")
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers '(;; languages
@@ -17,12 +17,14 @@
                                                 haskell-enable-ghci-ng-support t
                                                 haskell-enable-hindent-support t
                                                 haskell-enable-shm-support nil)
+                                       extra-langs
+                                       ;; csharp
                                        ruby
                                        html
                                        markdown
                                        javascript
                                        scala
-                                       auctex
+                                       latex
                                        ;; utility
                                        org-repo-todo
                                        restclient
@@ -31,7 +33,7 @@
                                        company-mode
                                        git
                                        ;; user config file
-                                       codas
+                                       ;; codas
                                        )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(flycheck-haskell
@@ -44,9 +46,11 @@
    ))
 
 
+
 ;; Settings
 ;; --------
-
+(defun extra-langs/init-matlab-mode ()
+  (use-package matlab-mode :defer t :mode "\\.m\\'"))
 
 ;; Initialization Hooks
 ;; --------------------
@@ -159,10 +163,14 @@ This function is called at the very end of Spacemacs initialization."
 
   (setq evil-want-fine-undo nil)
 
+  (setq guide-key/popup-window-position 'right)
+
   ;; Sane cursor and window movements
   (setq scroll-preserve-screen-position 1
         smooth-scroll-margin 3
         scroll-margin 4)
+
+  (setq dotspacemacs-additional-packages '(matlab-mode))
 
   ;; Load yas
   ;; (yas-reload-all)
@@ -278,6 +286,9 @@ This function is called at the very end of Spacemacs initialization."
   )
 
 
+
+
+
 (defun custom-haskell-mode-hook ()
   "Execute as haskell-mode-hook."
   (subword-mode +1)
@@ -322,6 +333,7 @@ This function is called at the very end of Spacemacs initialization."
 
 
 
+
 ;; Custom variables
 ;; ----------------
 
@@ -337,6 +349,7 @@ This function is called at the very end of Spacemacs initialization."
  '(ahs-idle-interval 0.25)
  '(ahs-idle-timer 0 t)
  '(ahs-inhibit-face-list nil)
+ '(guide-key/popup-window-position (quote right))
  '(haskell-interactive-mode-eval-mode (quote haskell-mode))
  '(haskell-interactive-mode-eval-pretty nil)
  '(haskell-notify-p t)
@@ -356,10 +369,11 @@ This function is called at the very end of Spacemacs initialization."
    (quote
     (evil-leader evil bind-key dash sass-mode info+ indent-guide highlight-numbers highlight-indentation gitignore-mode gitconfig-mode gitattributes-mode git-link eval-sexp-fu cmm-mode adaptive-wrap ace-link parent-mode zenburn-theme yaml-mode window-numbering web-mode volatile-highlights vi-tilde-fringe use-package tagedit smooth-scrolling smex smeargle slim-mode shm scss-mode rvm ruby-tools ruby-test-mode robe rfringe restclient rainbow-mode rainbow-identifiers rainbow-delimiters powerline paradox page-break-lines noflet neotree multi-term move-text monokai-theme markdown-toc magit-svn magit-gitflow magit-gh-pulls linum-relative leuven-theme less-css-mode json-mode js2-refactor ido-vertical-mode ido-ubiquitous hungry-delete hl-anything hindent helm-themes helm-swoop helm-mode-manager helm-make helm-flyspell helm-descbinds helm-css-scss helm-c-yasnippet helm-ag haskell-mode haml-mode guide-key-tip google-translate golden-ratio github-browse-file git-timemachine git-messenger git-gutter-fringe gist framemove flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-terminal-cursor-changer evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-jumper evil-indent-textobject evil-iedit-state evil-exchange evil-escape evil-args evil-anzu ensime enh-ruby-mode emmet-mode elisp-slime-nav company-tern company-quickhelp company-ghc company-c-headers company-auctex coffee-mode bundler buffer-move base16-theme auto-highlight-symbol auto-dictionary aggressive-indent ag ace-window ace-jump-mode)))
  '(paradox-github-token t)
- '(ring-bell-function (quote ignore))
+ '(ring-bell-function (quote ignore) t)
  '(safe-local-variable-values
    (quote
-    ((haskell-process-use-ghci . t)
+    ((TeX-master . t)
+     (haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4))))
  '(shm-auto-insert-skeletons t)
  '(shm-use-presentation-mode t))
